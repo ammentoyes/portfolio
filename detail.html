@@ -40,6 +40,24 @@
         .container {
             padding-top: 110px;
         }
+
+        @media (max-width: 768px) {
+            .fixed-back-btn {
+                left: 20px !important;
+                top: 15px !important;
+                padding: 5px 12px;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding-top: 80px;
+            }
+
+            #category-title {
+                font-size: 1.4rem;
+                margin-left: 5px;
+            }
+        }
     </style>
 </head>
 
@@ -70,12 +88,12 @@
         const categoryId = params.get('id');
 
         const albumInfo = {
-            "animals": { title: "animals", count: 145 },
-            "birds": { title: "birds", count: 416 },
+            "animals": { title: "animals", count: 144 },
+            "birds": { title: "birds", count: 414 },
             "buddies": { title: "buddies", count: 14 },
             "human": { title: "human", count: 112 },
             "people": { title: "people", count: 55 },
-            "travel": { title: "travel", count: 273 },
+            "travel": { title: "travel", count: 275 },
             "withStories": { title: "withStories", count: 21 }
         };
 
