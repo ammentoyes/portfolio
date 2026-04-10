@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>details_mentoArchive</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.2/photoswipe.min.css">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            padding-top: 10px;
+        }
+
+        .img-fluid {
+            transition: transform 0.3s ease;
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.02);
+        }
+
+        .fixed-back-btn {
+            position: fixed;
+            top: 20px;
+            left: 100px;
+            z-index: 2000;
+
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .fixed-back-btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .container {
+            padding-top: 110px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="index.html#portfolio" class="btn btn-outline-dark fixed-back-btn">
+        ← back to gallery
+    </a>
+
+    <div class="container pb-5">
+        <h2 id="category-title" class="mb-4">loading...</h2>
+        <div id="photo-grid" class="row row-cols-2 row-cols-md-3 g-4">
+        </div>
+    </div>
+
+    <script>
+        const portfolioData = [
+            { id: "animals", title: "Animals", cover: "images/animals/cover.jpg", description: "animals" },
+            { id: "birds", title: "Birds", cover: "images/birds/cover.jpg", description: "YES, BIRDS." },
+            { id: "buddies", title: "My Travel Buddies", cover: "images/buddies/cover.jpg", description: "my babes" },
+            { id: "human", title: "Human", cover: "images/human/cover.jpg", description: "some people doing their business" },
+            { id: "people", title: "People", cover: "images/people/cover.jpg", description: "a page for people who I know" },
+            { id: "travel", title: "Travel", cover: "images/travel/cover.jpg", description: "every country has its own color" },
+            { id: "withStories", title: "Others", cover: "images/withStories/cover.jpg", description: "some pics not yet to be sorted" }
+        ];
+
+        const params = new URLSearchParams(window.location.search);
+        const categoryId = params.get('id');
+
+        const albumInfo = {
+            "animals": { title: "animals", count: 145 },
+            "birds": { title: "birds", count: 416 },
+            "buddies": { title: "buddies", count: 14 },
+            "human": { title: "human", count: 112 },
+            "people": { title: "people", count: 55 },
+            "travel": { title: "travel", count: 273 },
+            "withStories": { title: "withStories", count: 21 }
+        };
+
+        const album = albumInfo[categoryId];
+
+        if (album) {
+            document.getElementById('category-title').innerText = album.title;
+            const grid = document.getElementById('photo-grid');
+
+            for (let i = 1; i <= album.count; i++) {
+                const photoPath = `./images/${categoryId}/${i}.jpg`;
+                grid.innerHTML += `
+        <div class="col">
+            <a href="${photoPath}" 
+               target="_blank"
+               class="pswp-gallery-item">
+                <img src="${photoPath}" class="img-fluid shadow-sm rounded" 
+                     style="width:100%; height:300px; object-fit:cover;"
+                     onload="updateImageSize(this)"
+                     onerror="this.parentElement.style.display='none'"> 
+            </a>
+        </div>
+    `;
+            }
+
+            function updateImageSize(img) {
+                const link = img.parentElement;
+                link.setAttribute('data-pswp-width', img.naturalWidth);
+                link.setAttribute('data-pswp-height', img.naturalHeight);
+            }
+        }
+    </script>
+    <script type="module">
+        import PhotoSwipeLightbox from 'https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.2/photoswipe-lightbox.esm.min.js';
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#photo-grid',
+            children: 'a.pswp-gallery-item',
+            fullscreenEl: false,
+            zoomEl: true,
+            wheelToZoom: true,
+
+            pswpModule: () => import('https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.2/photoswipe.esm.min.js')
+        });
+
+        lightbox.init();
+    </script>
+</body>
+
+</html>
